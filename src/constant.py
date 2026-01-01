@@ -10,6 +10,7 @@ class Cask(TypedDict):
     url: str
     preRelease: int
     caskPath: str
+    quarantineStatus: int
 
 
 CASK_TEMPLATE = """
@@ -18,6 +19,14 @@ cask "{name}" do
     sha256 "{sha256}"
     url "{url}"
 
-    binary "sing-box-{version}-darwin-arm64/{name}"
+    binary "{asset_name}/{name}"
+
+    {noQuarantine}
 end
+"""
+
+NO_QUARANTINE_TEMPLATE = """
+    postflight do
+        system "xattr", "-d", "com.apple.quarantine", "{staged_file_path}"
+    end
 """

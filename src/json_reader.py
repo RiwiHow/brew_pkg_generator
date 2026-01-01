@@ -36,7 +36,16 @@ def json_reader(file: bool):
     target_asset = next(
         item for item in release["assets"] if "darwin-arm64.tar.gz" in item["name"]
     )
+    asset_name = target_asset["name"].split(".tar.gz")[0]
     sha256 = target_asset["digest"].split("sha256:")[1]
     download_url = target_asset["browser_download_url"]
 
-    return cask["caskPath"], cask["name"], version, sha256, download_url
+    return (
+        cask["caskPath"],
+        cask["quarantineStatus"],
+        cask["name"],
+        version,
+        asset_name,
+        sha256,
+        download_url,
+    )
