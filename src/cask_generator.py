@@ -1,15 +1,18 @@
-from constant import CASK_OUTPUT_PATH, CASK_TEMPLATE
+from pathlib import Path
+
+from constant import CASK_TEMPLATE
 from json_reader import json_reader
 
 
 def _cask_generator(file):
-    name, version, sha256, url = json_reader(file)
+    cask_output_path, name, version, sha256, url = json_reader(file)
 
     cask = CASK_TEMPLATE.format(
         name=name, version=version, sha256=sha256, url=url
     ).lstrip()
+    Path(cask_output_path).mkdir(exist_ok=True, parents=True)
 
-    with open(f"{CASK_OUTPUT_PATH}/{name}.rb", "w") as f:
+    with open(f"{cask_output_path}/{name}.rb", "w") as f:
         f.write(cask)
 
 

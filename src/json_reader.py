@@ -10,6 +10,9 @@ def json_reader(file: bool):
     with open(JSON_PATH, "r") as f:
         cask: Cask = json.load(f)
 
+    if not cask["caskPath"]:
+        raise ValueError("Missing 'caskPath' in JSON config.")
+
     if not file:
         url_parts = "/".join(cask["url"].split("/")[3:5])
         release_url = RELEASE_API + f"{url_parts}/releases"
@@ -36,4 +39,4 @@ def json_reader(file: bool):
     sha256 = target_asset["digest"].split("sha256:")[1]
     download_url = target_asset["browser_download_url"]
 
-    return cask["name"], version, sha256, download_url
+    return cask["caskPath"], cask["name"], version, sha256, download_url
