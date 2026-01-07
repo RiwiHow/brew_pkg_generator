@@ -29,6 +29,8 @@ def _cask_generator(file):
     with open(f"{cask_output_path}/{name}.rb", "w") as f:
         f.write(cask)
 
+    print(f"Update {name} to {version} sucessfully!")
+
 
 def generator_from_url():
     _cask_generator(False)
